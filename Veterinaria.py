@@ -12,7 +12,7 @@ class Mascota:
         if 0 <= value <= 12:
             self.__edad = value
         else:
-            print("ERROR: Edad no válida")
+            raise ValueError("ERROR: Edad no válida.")
     def mostrar_info_mascota(self):
         print(f"\tNombre: {self.nombre}, especie: {self.especie}, raza: {self.raza}, edad: {self.__edad}")
 
@@ -30,17 +30,18 @@ class Cliente:
             print("Mascotas:")
             for i in self.mascotas:
                 i.mostrar_info_mascota()
+        else:
+            print("No se han registrado mascotas con su nombre")
 
-class VisitaMedica:
-    def __init__(self, motivo, mascota):
+class CitaMedica:
+    def __init__(self, motivo, mascota, diagnostico):
         self.motivo = motivo
         self.mascota = mascota
-        self.diagnotsico = ""
-    def atender_cita(self, diagnostico):
         self.diagnotsico = diagnostico
     def mostrar_visita(self):
-        print(f"Mascota atendida: {self.mascota}, motivo de consulta: {self.motivo}, diagnóstico final: {self.diagnotsico}")
+        print(f"Mascota atendida: {self.mascota}, motivo de consulta: {self.motivo}, diagnóstico: {self.diagnotsico}")
 
+#Inicio de programa principal:
 print("INICIAR SESIÓN:")
 while True:
     usuario = input("Ingrese el usuario: ")
@@ -49,11 +50,12 @@ while True:
         opcion = "0"
         lista_clientes = []
         lista_mascotas = []
+        historial_citas = []
         while opcion != "6":
             print("==SISTEMA VETERINARIA==")
             print("1.Registrar cliente")
             print("2.Registrar mascota")
-            print("3.Agendar cita médica")
+            print("3.Registrar cita médica")
             print("4.Ver historial de citas")
             print("5.Ver clientes y mascotas")
             print("6.Salir")
@@ -91,7 +93,34 @@ while True:
                         if not lista_mascotas:
                             print("No hay mascotas registradas")
                             continue
-
+                        while True:
+                            nombre = input("Nombre de la mascota: ")
+                            mascota = next((i for i in lista_mascotas if i.nombre == nombre), None)
+                            if not nombre:
+                                print("No se encontro alguna mascota con ese nombre, verifique y vuelva a intentar.")
+                                continue
+                            break
+                        motivo = input("Motivo de la cita: ")
+                        diagnostico = input("Diagnostico inicial: ")
+                        registrar_cita = CitaMedica(motivo, mascota, diagnostico)
+                        historial_citas.append(registrar_cita)
+                        print("Cita registrada")
+                    case "4":
+                        if not historial_citas:
+                            print("No se ha registrado ninguna cita.")
+                            continue
+                        for item in historial_citas:
+                            item.mostrar_visita()
+                    case "5":
+                        if not lista_clientes:
+                            print("No se han registrado clientes ni mascotas")
+                            continue
+                        for item in lista_clientes:
+                            item.mostrar_info_cliente()
+                    case "6":
+                        print("¡Hasta luego!")
+                    case __:
+                        print(f"La opción {opcion} no está diponible")
             except ValueError:
                 print("ERROR: Ha ingresado un dato no válido")
     else:
