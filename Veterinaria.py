@@ -3,13 +3,13 @@ class Mascota:
         self.nombre = nombre
         self.especie = especie
         self.raza = raza
-        self.__edad = edad
+        self.edad = edad
     @property
     def edad(self):
         return self.__edad
     @edad.setter
     def edad(self, value):
-        if 0 <= value <= 12:
+        if 0 <= value <= 20:
             self.__edad = value
         else:
             raise ValueError("ERROR: Edad no válida.")
@@ -37,9 +37,9 @@ class CitaMedica:
     def __init__(self, motivo, mascota, diagnostico):
         self.motivo = motivo
         self.mascota = mascota
-        self.diagnotsico = diagnostico
+        self.diagnostico = diagnostico
     def mostrar_visita(self):
-        print(f"Mascota atendida: {self.mascota}, motivo de consulta: {self.motivo}, diagnóstico: {self.diagnotsico}")
+        print(f"Mascota atendida: {self.mascota.nombre}, motivo de consulta: {self.motivo}, diagnóstico: {self.diagnostico}")
 
 #Inicio de programa principal:
 print("INICIAR SESIÓN:")
@@ -64,7 +64,7 @@ while True:
                 match opcion:
                     case "1":
                         nombre_cliente = input("Nombre: ")
-                        telefono = int(input("Número de telefono: "))
+                        telefono = input("Número de telefono: ")
                         correo = input("Correo: ")
                         nuevo_cliente = Cliente(nombre_cliente, telefono, correo)
                         lista_clientes.append(nuevo_cliente)
@@ -80,7 +80,7 @@ while True:
                             while repetir:
                                 owner = input("Nombre del dueño: ")
                                 for i in lista_clientes:
-                                    if i.nombre == owner:
+                                    if i.nombre.lower() == owner.lower():
                                         i.agregar_mascota(nueva_mascota)
                                         repetir = False
                                 if repetir:
@@ -96,7 +96,7 @@ while True:
                         while True:
                             nombre = input("Nombre de la mascota: ")
                             mascota = next((i for i in lista_mascotas if i.nombre == nombre), None)
-                            if not nombre:
+                            if mascota is None:
                                 print("No se encontro alguna mascota con ese nombre, verifique y vuelva a intentar.")
                                 continue
                             break
