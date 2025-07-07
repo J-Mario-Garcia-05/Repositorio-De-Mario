@@ -8,9 +8,11 @@ class Mascota:
     def edad(self):
         return self.__edad
     @edad.setter
-    def edad(self, edad):
-        if 0 <= edad <= 12:
-            self.edad = edad
+    def edad(self, value):
+        if 0 <= value <= 12:
+            self.__edad = value
+        else:
+            print("ERROR: Edad no válida")
     def mostrar_info_mascota(self):
         print(f"\tNombre: {self.nombre}, especie: {self.especie}, raza: {self.raza}, edad: {self.__edad}")
 
@@ -29,6 +31,16 @@ class Cliente:
             for i in self.mascotas:
                 i.mostrar_info_mascota()
 
+class VisitaMedica:
+    def __init__(self, motivo, mascota):
+        self.motivo = motivo
+        self.mascota = mascota
+        self.diagnotsico = ""
+    def atender_cita(self, diagnostico):
+        self.diagnotsico = diagnostico
+    def mostrar_visita(self):
+        print(f"Mascota atendida: {self.mascota}, motivo de consulta: {self.motivo}, diagnóstico final: {self.diagnotsico}")
+
 print("INICIAR SESIÓN:")
 while True:
     usuario = input("Ingrese el usuario: ")
@@ -36,6 +48,7 @@ while True:
     if usuario == "admin" and password == "admin":
         opcion = "0"
         lista_clientes = []
+        lista_mascotas = []
         while opcion != "6":
             print("==SISTEMA VETERINARIA==")
             print("1.Registrar cliente")
@@ -48,19 +61,37 @@ while True:
                 opcion = input("\nSeleccione una opción: ")
                 match opcion:
                     case "1":
-                        nombre_cliente = input("Ingrese el nombre: ")
-                        telefono = int(input("Ingrese un número de telefono: "))
-                        correo = input("Ingrese un correo: ")
+                        nombre_cliente = input("Nombre: ")
+                        telefono = int(input("Número de telefono: "))
+                        correo = input("Correo: ")
                         nuevo_cliente = Cliente(nombre_cliente, telefono, correo)
                         lista_clientes.append(nuevo_cliente)
                         print("Se ha completado el registro")
                     case "2":
-                        nombre_mascota = input("Ingrese el nombre de la mascota: ")
-                        especie = input("Ingrese la especie: ")
-                        raza = input("Ingrese la raza: ")
-                        edad = int(input("Ingrese la edad: "))
-                        nueva_masota = Mascota(nombre_mascota, especie, raza, edad)
-                        print("Se ha completado el registro")
+                        if lista_clientes:
+                            nombre_mascota = input("Nombre de la mascota: ")
+                            especie = input("Especie: ")
+                            raza = input("Raza: ")
+                            edad = int(input("Edad: "))
+                            nueva_mascota = Mascota(nombre_mascota, especie, raza, edad)
+                            repetir = True
+                            while repetir:
+                                owner = input("Nombre del dueño: ")
+                                for i in lista_clientes:
+                                    if i.nombre == owner:
+                                        i.agregar_mascota(nueva_mascota)
+                                        repetir = False
+                                if repetir:
+                                    print("No se encontre un cliente con el nombre registrado, revise y vuelva a intentarlo.")
+                            lista_mascotas.append(nueva_mascota)
+                            print("Se ha completado el registro")
+                        else:
+                            print("Debe registrar clientes antes de registrar mascotas.")
+                    case "3":
+                        if not lista_mascotas:
+                            print("No hay mascotas registradas")
+                            continue
+
             except ValueError:
                 print("ERROR: Ha ingresado un dato no válido")
     else:
