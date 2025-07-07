@@ -121,7 +121,10 @@ while True:
                         print("¡Hasta luego!")
                     case __:
                         print(f"La opción {opcion} no está diponible")
+
             except ValueError:
                 print("ERROR: Ha ingresado un dato no válido")
+            if opcion != "6":
+                input("Presione ENTER para continuar")
     else:
         print("Credenciales no válidas vuelva a intentar.")
