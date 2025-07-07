@@ -41,16 +41,17 @@ class CitaMedica:
     def mostrar_visita(self):
         print(f"Mascota atendida: {self.mascota.nombre}, motivo de consulta: {self.motivo}, diagnóstico: {self.diagnostico}")
 
-#Inicio de programa principal:
+#Programa principal:
+
+opcion = "0"
+lista_clientes = []
+lista_mascotas = []
+historial_citas = []
 print("INICIAR SESIÓN:")
 while True:
     usuario = input("Ingrese el usuario: ")
     password = input("Ingrese la contraseña: ")
     if usuario == "admin" and password == "admin":
-        opcion = "0"
-        lista_clientes = []
-        lista_mascotas = []
-        historial_citas = []
         while opcion != "6":
             print("==SISTEMA VETERINARIA==")
             print("1.Registrar cliente")
