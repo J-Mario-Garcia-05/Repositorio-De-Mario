@@ -127,5 +127,6 @@ while True:
                 print("ERROR: Ha ingresado un dato no válido")
             if opcion != "6":
                 input("Presione ENTER para continuar")
+        break
     else:
         print("Credenciales no válidas vuelva a intentar.")
